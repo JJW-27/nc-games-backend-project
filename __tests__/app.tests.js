@@ -28,4 +28,12 @@ describe('/api/categories', () => {
         });
       });
   });
+  test("GET - 404, non-existent path(typo)", () => {
+    return request(app)
+      .get("/api/categoriesss")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Path not found");
+      });
+  });
 });
