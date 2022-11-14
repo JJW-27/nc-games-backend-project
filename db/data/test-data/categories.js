@@ -5,5 +5,6 @@ module.exports = [
     description: "Players attempt to uncover each other's hidden role"
   },
   { slug: 'dexterity', description: 'Games involving physical skill' },
+  
   { slug: "children's games", description: 'Games suitable for children' }
 ];
