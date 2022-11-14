@@ -1,10 +1,8 @@
-const express = require('express');
-
 const { getCategories } = require('./controllers/controllers.js');
 
-const app = express();
+const express = require('express');
 
-app.use(express.json());
+const app = express();
 
 app.get('/api/categories', getCategories);
 
@@ -12,13 +10,8 @@ app.all('/*', (req, res, next) => {
   res.status(404).send({ msg: 'Path not found' });
 });
 
-app.use((err, req, res, next) => {
-  res.status(400).send({msg: err.msg})
-  } 
-);
-
-app.use((err, req, res)=> {
-  console.log(err)
-})
+app.use((err, req, res) => {
+  res.status(500).send(err);
+});
 
 module.exports = app;
