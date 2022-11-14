@@ -13,6 +13,17 @@ afterAll(() => {
   return db.end();
 });
 
+describe('/api*', () => {
+  test('GET - 404, non-existent path(typo)', () => {
+    return request(app)
+      .get('/api/categoriesss')
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('Path not found');
+      });
+  });
+});
+
 describe('/api/categories', () => {
   test('GET: 200 - responds with an object containing an array of category objects', () => {
     return request(app)
@@ -26,14 +37,6 @@ describe('/api/categories', () => {
             description: expect.any(String),
           });
         });
-      });
-  });
-  test("GET - 404, non-existent path(typo)", () => {
-    return request(app)
-      .get("/api/categoriesss")
-      .expect(404)
-      .then((res) => {
-        expect(res.body.msg).toBe("Path not found");
       });
   });
 });
