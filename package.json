@@ -8,7 +8,7 @@
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
     "prepare": "husky install",
-    "test-query": "psql -f testQuery.sql > testQuery.txt"
+    "test-query": "psql -f ./troubleshooting/testQuery.sql > ./troubleshooting/testQuery.txt"
   },
   "repository": {
     "type": "git",
