@@ -1,4 +1,6 @@
-const { getCategories, getReviews } = require('./controllers/controllers.js');
+const { getCategories} = require('./controllers/categories.controllers.js');
+
+const { getReviews } = require('./controllers/reviews.controllers.js');
 
 const express = require('express');
 
