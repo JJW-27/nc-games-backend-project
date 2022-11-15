@@ -114,3 +114,24 @@ describe('/api/reviews/:review_id', () => {
       });
   });
 });
+
+describe.only('/api/reviews/:review_id/comments', () => {
+  it('GET: 200 - responds with an array of comments for the requested id', () => {
+    return request(app)
+      .get('/api/reviews/2/comments')
+      .expect(200)
+      .then(res => {
+        expect(res.body.comments.length).toBe(3);
+        res.body.comments.forEach(comment => {
+          expect(comment).toMatchObject({
+            review_id: 2,
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+          });
+        });
+      });
+  });
+});
