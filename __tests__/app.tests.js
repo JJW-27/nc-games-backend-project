@@ -115,18 +115,18 @@ describe('/api/reviews/:review_id', () => {
   });
 });
 
-describe('/api/reviews/:review_id/comments', () => {
-  it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
-    const newComment = {
-      username: 'ComicBookGuy',
-      body: 'This is a new comment',
-    };
-    return request(app)
-      .post('/api/reviews/1/comments')
-      .send(newComment)
-      .expect(201)
-      .then(res => {
-        expect(res.body.comment).toEqual({ review_id: 1, ...newComment });
-      });
-  });
-});
+// describe('/api/reviews/:review_id/comments', () => {
+//   it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
+//     const newComment = {
+//       username: 'ComicBookGuy',
+//       body: 'This is a new comment',
+//     };
+//     return request(app)
+//       .post('/api/reviews/1/comments')
+//       .send(newComment)
+//       .expect(201)
+//       .then(res => {
+//         expect(res.body.comment).toEqual({ review_id: 1, ...newComment });
+//       });
+//   });
+// });
