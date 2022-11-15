@@ -116,7 +116,7 @@ describe('/api/reviews/:review_id', () => {
 });
 
 describe('/api/reviews/:review_id/comments', () => {
-  it('GET: 200 - responds with an array of comments for the requested id', () => {
+  it('GET: 200 - responds with an array of comments for the requested id, sorted with most recent comments first', () => {
     return request(app)
       .get('/api/reviews/2/comments')
       .expect(200)
@@ -132,8 +132,12 @@ describe('/api/reviews/:review_id/comments', () => {
             body: expect.any(String),
           });
         });
+        expect(res.body.comments).toBeSortedBy('created_at', {
+          descending: true,
+        });
       });
   });
+
   it('GET: 400 - Bad request', () => {
     return request(app)
       .get('/api/reviews/bananas/comments')
