@@ -76,7 +76,7 @@ describe('/api/reviews', () => {
   });
 });
 
-describe.only('/api/reviews/:review_id', () => {
+describe('/api/reviews/:review_id', () => {
   it('GET: 200 - returns a single review with the requested review_id', () => {
     return request(app)
       .get('/api/reviews/1')
@@ -93,6 +93,24 @@ describe.only('/api/reviews/:review_id', () => {
           owner: expect.any(String),
           created_at: expect.any(String),
         });
+      });
+  });
+
+  it('GET: 400 - Bad request', () => {
+    return request(app)
+      .get('/api/reviews/bananas')
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
+  });
+
+  it('GET: 404 - Valid but non-existent review_id', () => {
+    return request(app)
+      .get('/api/reviews/30')
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('review_id not found');
       });
   });
 });
