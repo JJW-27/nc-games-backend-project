@@ -166,18 +166,25 @@ describe('/api/reviews/:review_id/comments', () => {
   });
 });
 
-// describe.only('/api/reviews/:review_id/comments', () => {
-//   it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
-//     const newComment = {
-//       username: 'ComicBookGuy',
-//       body: 'Worst. Review. Ever.',
-//     };
-//     return request(app)
-//       .post('/api/reviews/1/comments')
-//       .send(newComment)
-//       .expect(201)
-//       .then(res => {
-//         expect(res.body.comment).toEqual({ review_id: 1, ...newComment });
-//       });
-//   });
-// });
+describe('/api/reviews/:review_id/comments', () => {
+  it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
+    const newComment = {
+      username: 'philippaclaire9',
+      body: 'Worst. Review. Ever.',
+    };
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(newComment)
+      .expect(201)
+      .then(res => {
+        expect(res.body.comment).toMatchObject({
+          review_id: 1,
+          author: 'philippaclaire9',
+          body: 'Worst. Review. Ever.',
+          comment_id: expect.any(Number),
+          votes: 0,
+          created_at: expect.any(String),
+        });
+      });
+  });
+});
