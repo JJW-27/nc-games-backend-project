@@ -26,3 +26,8 @@ exports.selectReviewById = review_id => {
       }
     });
 };
+
+//move to comments models
+exports.insertCommentByReviewId = (review_id, username, body) => {
+  return db.query(`INSERT INTO comments`);
+};

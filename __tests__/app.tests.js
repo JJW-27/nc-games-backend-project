@@ -115,11 +115,11 @@ describe('/api/reviews/:review_id', () => {
   });
 });
 
-// describe('/api/reviews/:review_id/comments', () => {
+// describe.only('/api/reviews/:review_id/comments', () => {
 //   it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
 //     const newComment = {
 //       username: 'ComicBookGuy',
-//       body: 'This is a new comment',
+//       body: 'Worst. Review. Ever.',
 //     };
 //     return request(app)
 //       .post('/api/reviews/1/comments')

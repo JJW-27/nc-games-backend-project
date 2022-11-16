@@ -15,6 +15,8 @@ app.get('/api/reviews', getReviews);
 
 app.get('/api/reviews/:review_id', getReviewById);
 
+// app.post('/api/reviews/:review_id/comments', postCommentByReviewId)
+
 app.all('/*', (req, res, next) => {
   res.status(404).send({ msg: 'Path not found' });
 });

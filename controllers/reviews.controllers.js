@@ -22,3 +22,13 @@ exports.getReviewById = (req, res, next) => {
       next(err);
     });
 };
+
+
+//move to comments controllers
+exports.postCommentByReviewId = (req, res, next) => {
+  const {review_id} = req.params;
+  const {username, body} = req.body;
+insertCommentByReviewId(review_id, username, body).then(comment => {
+  res.status(201).send({comment})
+})
+}
