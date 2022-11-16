@@ -113,6 +113,22 @@ describe('/api/reviews/:review_id', () => {
         expect(res.body.msg).toBe('review_id not found');
       });
   });
+
+  it.only('PATCH: 200 - updates review with given review_id and responds with the updated review', () => {
+    return request(app).patch('/api/reviews/1').send({inc_votes: 2}).expect(200).then(res => {
+      expect(res.body.review).toMatchObject({
+        title: 'Agricola',
+        designer: 'Uwe Rosenberg',
+        owner: 'mallionaire',
+        review_img_url:
+          'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+        review_body: 'Farmyard fun!',
+        category: 'euro game',
+        created_at: expect.any(String),
+        votes: 3
+      },)
+    })
+  });
 });
 
 describe('/api/reviews/:review_id/comments', () => {
@@ -189,7 +205,7 @@ describe('/api/reviews/:review_id/comments', () => {
       });
   });
 
-  it('GET: 400 - user does not exist', () => {
+  it('POST: 400 - user does not exist', () => {
     const newComment = {
       username: 'ComicBookGuy',
       body: 'Worst. Review. EVER.',
@@ -202,7 +218,7 @@ describe('/api/reviews/:review_id/comments', () => {
         expect(res.body.msg).toBe('User does not exist');
       });
   });
-  it('GET: 400 - empty comment body', () => {
+  it('POST: 400 - empty comment body', () => {
     const newComment = {
       username: 'philippaclaire9',
       body: '',
@@ -247,3 +263,4 @@ describe('/api/reviews/:review_id/comments', () => {
       });
   });
 });
+
