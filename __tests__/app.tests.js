@@ -167,14 +167,15 @@ describe('/api/reviews/:review_id/comments', () => {
 });
 
 describe('/api/reviews/:review_id/comments', () => {
+  const validComment = {
+    username: 'philippaclaire9',
+    body: 'Great game!',
+  };
+
   it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
-    const newComment = {
-      username: 'philippaclaire9',
-      body: 'Great game!',
-    };
     return request(app)
       .post('/api/reviews/1/comments')
-      .send(newComment)
+      .send(validComment)
       .expect(201)
       .then(res => {
         expect(res.body.comment).toMatchObject({
@@ -215,26 +216,18 @@ describe('/api/reviews/:review_id/comments', () => {
       });
   });
   it('POST: 400 - Bad request', () => {
-    const newComment = {
-      username: 'philippaclaire9',
-      body: 'Great game!',
-    };
     return request(app)
       .post('/api/reviews/bananas/comments')
-      .send(newComment)
+      .send(validComment)
       .expect(400)
       .then(res => {
         expect(res.body.msg).toBe('Bad request');
       });
   });
   it('POST: 404 - Valid but non-existent review_id', () => {
-    const newComment = {
-      username: 'philippaclaire9',
-      body: 'Great game!',
-    };
     return request(app)
       .post('/api/reviews/30/comments')
-      .send(newComment)
+      .send(validComment)
       .expect(404)
       .then(res => {
         expect(res.body.msg).toBe('review_id not found');
