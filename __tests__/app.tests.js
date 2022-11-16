@@ -215,10 +215,23 @@ describe('/api/reviews/:review_id/comments', () => {
         expect(res.body.msg).toBe('Empty comment body');
       });
   });
-  it('POST: 400 - Bad request', () => {
+  it('POST: 400 - Bad request when invalid review_id data type', () => {
     return request(app)
       .post('/api/reviews/bananas/comments')
       .send(validComment)
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
+  });
+  it('POST: 400 - Bad request when the request body keys are wrong (NOT NULL VIOLATION)', () => {
+    const invalidComment = {
+      name: 'philippaclaire9',
+      body: 'Great game!',
+    };
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(invalidComment)
       .expect(400)
       .then(res => {
         expect(res.body.msg).toBe('Bad request');

@@ -6,14 +6,15 @@ const {
 } = require('./controllers/reviews.controllers.js');
 
 const {
-  getCommentsByReviewId, postCommentByReviewId
+  getCommentsByReviewId,
+  postCommentByReviewId,
 } = require('./controllers/comments.controllers.js');
 
 const express = require('express');
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 app.get('/api/categories', getCategories);
 
@@ -23,17 +24,17 @@ app.get('/api/reviews/:review_id', getReviewById);
 
 app.get('/api/reviews/:review_id/comments', getCommentsByReviewId);
 
-app.post('/api/reviews/:review_id/comments', postCommentByReviewId)
+app.post('/api/reviews/:review_id/comments', postCommentByReviewId);
 
 app.all('/*', (req, res, next) => {
   res.status(404).send({ msg: 'Path not found' });
 });
 
 app.use((err, req, res, next) => {
-  if (err.code === '22P02') {
+  if (err.code === '22P02' || err.code === '23502') {
     res.status(400).send({ msg: 'Bad request' });
   } else if (err.code === '23503') {
-res.status(400).send({msg: 'User does not exist'})
+    res.status(400).send({ msg: 'User does not exist' });
   } else {
     next(err);
   }
