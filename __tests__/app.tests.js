@@ -114,3 +114,54 @@ describe('/api/reviews/:review_id', () => {
       });
   });
 });
+
+describe('/api/reviews/:review_id/comments', () => {
+  it('GET: 200 - responds with an array of comments for the requested id, sorted with most recent comments first', () => {
+    return request(app)
+      .get('/api/reviews/2/comments')
+      .expect(200)
+      .then(res => {
+        expect(res.body.comments.length).toBe(3);
+        res.body.comments.forEach(comment => {
+          expect(comment).toMatchObject({
+            review_id: 2,
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+          });
+        });
+        expect(res.body.comments).toBeSortedBy('created_at', {
+          descending: true,
+        });
+      });
+  });
+
+  it('GET: 200 - valid review_id but no associated comments,responds with an empty array', () => {
+    return request(app)
+      .get('/api/reviews/1/comments')
+      .expect(200)
+      .then(res => {
+        expect(res.body.comments).toEqual([]);
+      });
+  });
+
+  it('GET: 400 - Bad request', () => {
+    return request(app)
+      .get('/api/reviews/bananas/comments')
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
+  });
+
+  it('GET: 404 - Valid but non-existent review_id', () => {
+    return request(app)
+      .get('/api/reviews/30/comments')
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('review_id not found');
+      });
+  });
+});
