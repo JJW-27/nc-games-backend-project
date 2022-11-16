@@ -196,21 +196,48 @@ describe('/api/reviews/:review_id/comments', () => {
     return request(app)
       .post('/api/reviews/1/comments')
       .send(newComment)
-      .expect(400).then(res => {
-        expect(res.body.msg).toBe('User does not exist')
-      })
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('User does not exist');
+      });
   });
-});
-
-it('GET: 400 - empty comment body', () => {
-  const newComment = {
-    username: 'philippaclaire9',
-    body: '',
-  };
-  return request(app)
-    .post('/api/reviews/1/comments')
-    .send(newComment)
-    .expect(400).then(res => {
-      expect(res.body.msg).toBe('Empty comment body')
-    })
+  it('GET: 400 - empty comment body', () => {
+    const newComment = {
+      username: 'philippaclaire9',
+      body: '',
+    };
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(newComment)
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Empty comment body');
+      });
+  });
+  it('POST: 400 - Bad request', () => {
+    const newComment = {
+      username: 'philippaclaire9',
+      body: 'Great game!',
+    };
+    return request(app)
+      .post('/api/reviews/bananas/comments')
+      .send(newComment)
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
+  });
+  it('POST: 404 - Valid but non-existent review_id', () => {
+    const newComment = {
+      username: 'philippaclaire9',
+      body: 'Great game!',
+    };
+    return request(app)
+      .post('/api/reviews/30/comments')
+      .send(newComment)
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('review_id not found');
+      });
+  });
 });

@@ -1,4 +1,5 @@
 const db = require('../db/connection.js');
+const { checkReviewIdExists } = require('../myUtils/myUtils.js');
 
 exports.selectReviews = () => {
   return db
