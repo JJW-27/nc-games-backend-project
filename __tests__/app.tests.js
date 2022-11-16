@@ -138,6 +138,15 @@ describe('/api/reviews/:review_id/comments', () => {
       });
   });
 
+  it('GET: 200 - valid review_id but no associated comments,responds with an empty array', () => {
+    return request(app)
+      .get('/api/reviews/1/comments')
+      .expect(200)
+      .then(res => {
+        expect(res.body.comments).toEqual([]);
+      });
+  });
+
   it('GET: 400 - Bad request', () => {
     return request(app)
       .get('/api/reviews/bananas/comments')
