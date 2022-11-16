@@ -165,3 +165,85 @@ describe('/api/reviews/:review_id/comments', () => {
       });
   });
 });
+
+describe('/api/reviews/:review_id/comments', () => {
+  const validComment = {
+    username: 'philippaclaire9',
+    body: 'Great game!',
+  };
+
+  it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(validComment)
+      .expect(201)
+      .then(res => {
+        expect(res.body.comment).toMatchObject({
+          review_id: 1,
+          author: 'philippaclaire9',
+          body: 'Great game!',
+          comment_id: expect.any(Number),
+          votes: 0,
+          created_at: expect.any(String),
+        });
+      });
+  });
+
+  it('GET: 400 - user does not exist', () => {
+    const newComment = {
+      username: 'ComicBookGuy',
+      body: 'Worst. Review. EVER.',
+    };
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(newComment)
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('User does not exist');
+      });
+  });
+  it('GET: 400 - empty comment body', () => {
+    const newComment = {
+      username: 'philippaclaire9',
+      body: '',
+    };
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(newComment)
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Empty comment body');
+      });
+  });
+  it('POST: 400 - Bad request when invalid review_id data type', () => {
+    return request(app)
+      .post('/api/reviews/bananas/comments')
+      .send(validComment)
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
+  });
+  it('POST: 400 - Bad request when the request body keys are wrong (NOT NULL VIOLATION)', () => {
+    const invalidComment = {
+      name: 'philippaclaire9',
+      body: 'Great game!',
+    };
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(invalidComment)
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
+  });
+  it('POST: 404 - Valid but non-existent review_id', () => {
+    return request(app)
+      .post('/api/reviews/30/comments')
+      .send(validComment)
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('review_id not found');
+      });
+  });
+});
