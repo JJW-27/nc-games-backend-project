@@ -170,7 +170,7 @@ describe('/api/reviews/:review_id/comments', () => {
   it('POST: 201 - adds comment with given review_id and responds with the added comment', () => {
     const newComment = {
       username: 'philippaclaire9',
-      body: 'Worst. Review. Ever.',
+      body: 'Great game!',
     };
     return request(app)
       .post('/api/reviews/1/comments')
@@ -180,11 +180,24 @@ describe('/api/reviews/:review_id/comments', () => {
         expect(res.body.comment).toMatchObject({
           review_id: 1,
           author: 'philippaclaire9',
-          body: 'Worst. Review. Ever.',
+          body: 'Great game!',
           comment_id: expect.any(Number),
           votes: 0,
           created_at: expect.any(String),
         });
       });
+  });
+
+  it.only('GET: 400 - user does not exist', () => {
+    const newComment = {
+      username: 'ComicBookGuy',
+      body: 'Worst. Review. EVER.',
+    };
+    return request(app)
+      .post('/api/reviews/1/comments')
+      .send(newComment)
+      .expect(400).then(res => {
+        expect(res.body.msg).toBe('User does not exist')
+      })
   });
 });
