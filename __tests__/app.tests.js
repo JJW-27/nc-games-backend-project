@@ -77,7 +77,28 @@ describe('/api/reviews', () => {
 });
 
 describe('/api/reviews/:review_id', () => {
-  it('GET: 200 - returns a single review with the requested review_id', () => {
+
+  it('GET: 200 - returns a single review with the requested review_id, including a count of all comments for that review', () => {
+    return request(app)
+      .get('/api/reviews/2')
+      .expect(200)
+      .then(res => {
+        expect(res.body.review[0]).toMatchObject({
+          review_id: 2,
+          title: expect.any(String),
+          review_body: expect.any(String),
+          designer: expect.any(String),
+          review_img_url: expect.any(String),
+          votes: expect.any(Number),
+          category: expect.any(String),
+          owner: expect.any(String),
+          created_at: expect.any(String),
+          comment_count: 3,
+        });
+      });
+  });
+
+  it('GET: 200 - works when there are no comments for the requested review_id', () => {
     return request(app)
       .get('/api/reviews/1')
       .expect(200)
@@ -92,6 +113,7 @@ describe('/api/reviews/:review_id', () => {
           category: expect.any(String),
           owner: expect.any(String),
           created_at: expect.any(String),
+          comment_count: 0,
         });
       });
   });
