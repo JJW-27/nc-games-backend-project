@@ -420,15 +420,6 @@ describe('/api/users', () => {
   });
 });
 
-
-describe('/api', () => {
-  test('GET: 200 - responds with a JSON describing all available endpoints', () => {
-    return request(app)
-      .get('/api')
-      .expect(200)
-      .then(res => {
-        expect(res.body.endpoints).toEqual(endpoints);
-
 describe('/api/comments/:comment_id', () => {
   test('DELETE: 204 - deletes comment with given comment_id', () => {
     return request(app).delete('/api/comments/1').expect(204);
@@ -440,7 +431,17 @@ describe('/api/comments/:comment_id', () => {
       .expect(404)
       .then(res => {
         expect(res.body.msg).toBe('comment_id not found');
+      });
+  });
+});
 
+describe('/api', () => {
+  test('GET: 200 - responds with a JSON describing all available endpoints', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(res => {
+        expect(res.body.endpoints).toEqual(endpoints);
       });
   });
 });
