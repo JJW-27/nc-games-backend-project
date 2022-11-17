@@ -27,3 +27,36 @@ exports.selectReviewById = review_id => {
       }
     });
 };
+
+exports.updateReviewById = (review_id, inc_votes) => {
+  if (inc_votes === '') {
+    return Promise.reject({
+      status: 400,
+      msg: 'inc_votes must have a number value',
+    });
+  }
+
+  if (inc_votes === 0) {
+    return Promise.reject({
+      status: 400,
+      msg: 'inc_votes must be greater than or less than 0',
+    });
+  }
+
+  if (typeof inc_votes === 'number' && inc_votes % 1 !== 0) {
+    return Promise.reject({
+      status: 400,
+      msg: 'inc_votes must be a whole number',
+    });
+  }
+  return checkReviewIdExists(review_id).then(() => {
+    return db
+      .query(
+        'UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;',
+        [inc_votes, review_id]
+      )
+      .then(updatedComment => {
+        return updatedComment.rows[0];
+      });
+  });
+};

@@ -113,7 +113,82 @@ describe('/api/reviews/:review_id', () => {
         expect(res.body.msg).toBe('review_id not found');
       });
   });
+
+  it('PATCH: 200 - updates review with given review_id and responds with the updated review', () => {
+    return request(app)
+      .patch('/api/reviews/1')
+      .send({ inc_votes: 2 })
+      .expect(200)
+      .then(res => {
+        expect(res.body.review).toMatchObject({
+          title: 'Agricola',
+          designer: 'Uwe Rosenberg',
+          owner: 'mallionaire',
+          review_img_url:
+            'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+          review_body: 'Farmyard fun!',
+          category: 'euro game',
+          created_at: expect.any(String),
+          votes: 3,
+        });
+      });
+  });
+  it('PATCH:400 - incorrect patch body key (NOT NULL VIOLATION)', () => {
+    return request(app)
+      .patch('/api/reviews/1')
+      .send({ inc: 2 })
+      .expect(400).then(res => {
+        expect(res.body.msg).toBe('Bad request')
+      })
+  });
+
+  it('PATCH:400 - incorrect patch data type', () => {
+    return request(app)
+      .patch('/api/reviews/1')
+      .send({ inc_votes: 'two' })
+      .expect(400).then(res => {
+        expect(res.body.msg).toBe('Bad request')
+      })
+  });
+
+  it('PATCH:400 - inc_votes empty', () => {
+    return request(app)
+      .patch('/api/reviews/1')
+      .send({ inc_votes: '' })
+      .expect(400).then(res => {
+        expect(res.body.msg).toBe('inc_votes must have a number value')
+      })
+  });
+
+  it('PATCH:400 - inc_votes = 0', () => {
+    return request(app)
+      .patch('/api/reviews/1')
+      .send({ inc_votes: 0 })
+      .expect(400).then(res => {
+        expect(res.body.msg).toBe('inc_votes must be greater than or less than 0')
+      })
+  });
+
+  it('PATCH:400 - inc_votes is not a whole number', () => {
+    return request(app)
+      .patch('/api/reviews/1')
+      .send({ inc_votes: 2.1 })
+      .expect(400).then(res => {
+        expect(res.body.msg).toBe('inc_votes must be a whole number')
+      })
+  });
+
+  it('PATCH: 404 - valid but non-existent review_id', () => {
+    return request(app)
+      .patch('/api/reviews/30')
+      .send({ inc_votes: 2 })
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('review_id not found');
+      });
+  });
 });
+
 
 describe('/api/reviews/:review_id/comments', () => {
   it('GET: 200 - responds with an array of comments for the requested id, sorted with most recent comments first', () => {
@@ -189,7 +264,7 @@ describe('/api/reviews/:review_id/comments', () => {
       });
   });
 
-  it('GET: 400 - user does not exist', () => {
+  it('POST: 400 - user does not exist', () => {
     const newComment = {
       username: 'ComicBookGuy',
       body: 'Worst. Review. EVER.',
@@ -202,7 +277,7 @@ describe('/api/reviews/:review_id/comments', () => {
         expect(res.body.msg).toBe('User does not exist');
       });
   });
-  it('GET: 400 - empty comment body', () => {
+  it('POST: 400 - empty comment body', () => {
     const newComment = {
       username: 'philippaclaire9',
       body: '',
