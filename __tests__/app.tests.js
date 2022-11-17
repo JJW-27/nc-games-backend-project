@@ -42,7 +42,7 @@ describe('/api/categories', () => {
 });
 
 describe('/api/reviews', () => {
-  test('GET: 200 - responds with an object containing an array of review objects, sorted in descending date order', () => {
+  test('GET: 200 - responds with an object containing an array of review objects', () => {
     return request(app)
       .get('/api/reviews')
       .expect(200)
@@ -65,7 +65,7 @@ describe('/api/reviews', () => {
       });
   });
 
-  test('GET: 200 - sorts object by descending date order by default', () => {
+  test('GET: 200 - sorts reviews in descending date order by default', () => {
     return request(app)
       .get('/api/reviews')
       .expect(200)
@@ -75,22 +75,32 @@ describe('/api/reviews', () => {
         });
       });
   });
-});
 
-test('GET:200 - selects the reviews by queried category', () => {
-  return request(app)
-  .get("/api/reviews?category=dexterity")
-  .expect(200)
-  .then((res) => {
-    expect(res.body.reviews.length).toBe(1)
-    res.body.reviews.forEach(review => {
-      expect(review.category).toBe('dexterity')
-    })
+  test('GET:200 - selects the reviews by queried category', () => {
+    return request(app)
+      .get('/api/reviews?category=dexterity')
+      .expect(200)
+      .then(res => {
+        expect(res.body.reviews.length).toBe(1);
+        res.body.reviews.forEach(review => {
+          expect(review.category).toBe('dexterity');
+        });
+      });
+  });
+
+  test('GET: 200 - sorts reviews by query', () => {
+    return request(app)
+      .get('/api/reviews?sort_by=votes')
+      .expect(200)
+      .then(res => {
+        expect(res.body.reviews).toBeSortedBy('votes', {
+          descending: true,
+        });
+      });
   });
 });
 
 describe('/api/reviews/:review_id', () => {
-
   it('GET: 200 - returns a single review with the requested review_id, including a count of all comments for that review', () => {
     return request(app)
       .get('/api/reviews/2')
