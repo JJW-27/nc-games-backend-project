@@ -8,7 +8,8 @@
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
     "prepare": "husky install",
-    "test-query": "psql -f ./troubleshooting/testQuery.sql > ./troubleshooting/testQuery.txt"
+    "test-query": "psql -f ./troubleshooting/testQuery.sql > ./troubleshooting/testQuery.txt",
+    "seed-prod": "NODE_ENV=production npm run seed"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "express": "^4.18.2",
+    "nodemon": "^2.0.20",
     "pg": "^8.7.3",
     "pg-format": "^1.0.4",
     "supertest": "^6.3.1"
