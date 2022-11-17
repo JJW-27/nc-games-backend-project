@@ -1,32 +1,114 @@
 {
   "GET /api": {
-    "description": "serves up a json representation of all the available endpoints of the api"
+    "description": "responds with a json representation of all the available endpoints of the api"
   },
   "GET /api/categories": {
-    "description": "serves an array of all categories",
+    "description": "responds with an array of all categories",
     "queries": [],
     "exampleResponse": {
       "categories": [
         {
-          "description": "Players attempt to uncover each other's hidden role",
-          "slug": "Social deduction"
+          "description": "string",
+          "slug": "string"
         }
       ]
     }
   },
   "GET /api/reviews": {
-    "description": "serves an array of all reviews",
+    "description": "responds with an array of all reviews",
     "queries": ["category", "sort_by", "order"],
     "exampleResponse": {
       "reviews": [
         {
-          "title": "One Night Ultimate Werewolf",
-          "designer": "Akihisa Okui",
-          "owner": "happyamy2016",
-          "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-          "category": "hidden-roles",
-          "created_at": 1610964101251,
-          "votes": 5
+          "review_id": "any existent review_id number",
+          "title": "string",
+          "designer": "string",
+          "owner": "string",
+          "review_img_url": "string",
+          "category": "string",
+          "created_at": "timestamp",
+          "votes": "number",
+          "comment_count": "number"
+        }
+      ]
+    }
+  },
+  "GET /api/reviews/:review_id": {
+    "description": "responds with the review with the given review_id",
+    "exampleResponse": {
+      "review": {
+        "review_id": "number - equals the given review_id",
+        "title": "string",
+        "designer": "string",
+        "owner": "string",
+        "review_img_url": "string",
+        "category": "string",
+        "created_at": "timestamp",
+        "votes": "number",
+        "comment_count": "number"
+      }
+    }
+  },
+  "PATCH /api/reviews/:review_id": {
+    "description": "updates the votes on the review with the given review_id and responds with the updated review",
+    "accepted format for request body": {
+      "inc_votes": "any non-zero, whole number"
+    },
+    "exampleResponse": {
+      "review": {
+        "review_id": "number - equals the given review_id",
+        "title": "string",
+        "designer": "string",
+        "owner": "string",
+        "review_img_url": "string",
+        "category": "string",
+        "created_at": "timestamp",
+        "votes": "number"
+      }
+    }
+  },
+  "GET /api/reviews/:review_id/comments": {
+    "description": "responds with an array of all comments for the review with the given review_id, sorted from most to least recent",
+    "exampleResponse": {
+      "comments": [
+        {
+          "review_id": "number - equals the given review_id",
+          "comment_id": "number",
+          "votes": "number",
+          "created_at": "timestamp",
+          "author": "string",
+          "body": "string"
+        }
+      ]
+    }
+  },
+  "POST /api/reviews/:review_id/comments": {
+    "description": "adds a new comment to the review with the given review_id and responds with the added comment",
+    "accepted format for request body": {
+      "username": "string",
+      "body": "string"
+    },
+    "exampleResponse": {
+      "comment": [
+        {
+          "review_id": "number - equals the given review_id",
+          "comment_id": "number",
+          "votes": "number",
+          "created_at": "timestamp",
+          "author": "string",
+          "body": "string"
+        }
+      ]
+    }
+  },
+  "GET /api/users": {
+    "description": "responds with an array of all users",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "string",
+          "name": "string",
+          "avatar_url": "string"
         }
       ]
     }
