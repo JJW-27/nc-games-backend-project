@@ -99,7 +99,7 @@ describe('/api/reviews', () => {
       });
   });
 
-  test.only('GET: 200 - sorts in ascending order when included in the query', () => {
+  test('GET: 200 - sorts in ascending order when included in the query', () => {
     return request(app)
       .get('/api/reviews?sort_by=votes&order=ASC')
       .expect(200)
@@ -107,6 +107,25 @@ describe('/api/reviews', () => {
         expect(res.body.reviews).toBeSortedBy('votes');
       });
   });
+
+  test('GET: 400 - sort_by query is resistant to query SQL injection', () => {
+    return request(app)
+      .get('/api/reviews?sort_by=jibberish')
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('invalid sort query');
+      });
+  });
+
+  test('GET: 400 - order query is resistant to query SQL injection', () => {
+    return request(app)
+      .get('/api/reviews?order=jibberish')
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('invalid sort query');
+      });
+  });
+  
 });
 
 describe('/api/reviews/:review_id', () => {
