@@ -420,7 +420,7 @@ describe('/api/users', () => {
   });
 });
 
-describe.only('/api', () => {
+describe('/api', () => {
   test('GET: 200 - responds with a JSON describing all available endpoints', () => {
     return request(app)
       .get('/api')
