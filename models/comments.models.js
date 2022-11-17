@@ -1,5 +1,6 @@
 const db = require('../db/connection.js');
 const { checkReviewIdExists } = require('../myUtils/myUtils.js');
+const { checkCommentIdExists } = require('../myUtils/myUtils.js');
 
 exports.selectCommentsByReviewId = review_id => {
   return checkReviewIdExists(review_id).then(() => {
@@ -28,4 +29,12 @@ exports.insertCommentByReviewId = (review_id, username, body) => {
     .then(comment => {
       return comment.rows[0];
     });
+};
+
+exports.deleteCommentByCommentId = comment_id => {
+  return checkCommentIdExists(comment_id).then(() => {
+    return db.query(`DELETE FROM comments WHERE comment_id = $1;`, [
+      comment_id,
+    ]);
+  });
 };

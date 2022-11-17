@@ -9,6 +9,7 @@ const {
 const {
   getCommentsByReviewId,
   postCommentByReviewId,
+  removeCommentByCommentId
 } = require('./controllers/comments.controllers.js');
 
 const { getUsers } = require('./controllers/users.controllers.js');
@@ -32,6 +33,8 @@ app.post('/api/reviews/:review_id/comments', postCommentByReviewId);
 app.patch('/api/reviews/:review_id', patchReviewById);
 
 app.get('/api/users', getUsers)
+
+app.delete('/api/comments/:comment_id', removeCommentByCommentId)
 
 app.all('/*', (req, res, next) => {
   res.status(404).send({ msg: 'Path not found' });

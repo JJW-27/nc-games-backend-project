@@ -77,7 +77,6 @@ describe('/api/reviews', () => {
 });
 
 describe('/api/reviews/:review_id', () => {
-
   it('GET: 200 - returns a single review with the requested review_id, including a count of all comments for that review', () => {
     return request(app)
       .get('/api/reviews/2')
@@ -365,6 +364,21 @@ describe('/api/users', () => {
             avatar_url: expect.any(String),
           });
         });
+      });
+  });
+});
+
+describe('/api/comments/:comment_id', () => {
+  test('DELETE: 204 - deletes comment with given comment_id', () => {
+    return request(app).delete('/api/comments/1').expect(204);
+  });
+
+  test('DELETE: 404 - comment with comment_id not found', () => {
+    return request(app)
+      .delete('/api/comments/30')
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('comment_id not found');
       });
   });
 });
