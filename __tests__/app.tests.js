@@ -137,45 +137,52 @@ describe('/api/reviews/:review_id', () => {
     return request(app)
       .patch('/api/reviews/1')
       .send({ inc: 2 })
-      .expect(400).then(res => {
-        expect(res.body.msg).toBe('Bad request')
-      })
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
   });
 
   it('PATCH:400 - incorrect patch data type', () => {
     return request(app)
       .patch('/api/reviews/1')
       .send({ inc_votes: 'two' })
-      .expect(400).then(res => {
-        expect(res.body.msg).toBe('Bad request')
-      })
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
   });
 
   it('PATCH:400 - inc_votes empty', () => {
     return request(app)
       .patch('/api/reviews/1')
       .send({ inc_votes: '' })
-      .expect(400).then(res => {
-        expect(res.body.msg).toBe('inc_votes must have a number value')
-      })
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('inc_votes must have a number value');
+      });
   });
 
   it('PATCH:400 - inc_votes = 0', () => {
     return request(app)
       .patch('/api/reviews/1')
       .send({ inc_votes: 0 })
-      .expect(400).then(res => {
-        expect(res.body.msg).toBe('inc_votes must be greater than or less than 0')
-      })
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe(
+          'inc_votes must be greater than or less than 0'
+        );
+      });
   });
 
   it('PATCH:400 - inc_votes is not a whole number', () => {
     return request(app)
       .patch('/api/reviews/1')
       .send({ inc_votes: 2.1 })
-      .expect(400).then(res => {
-        expect(res.body.msg).toBe('inc_votes must be a whole number')
-      })
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('inc_votes must be a whole number');
+      });
   });
 
   it('PATCH: 404 - valid but non-existent review_id', () => {
@@ -188,7 +195,6 @@ describe('/api/reviews/:review_id', () => {
       });
   });
 });
-
 
 describe('/api/reviews/:review_id/comments', () => {
   it('GET: 200 - responds with an array of comments for the requested id, sorted with most recent comments first', () => {
@@ -319,6 +325,24 @@ describe('/api/reviews/:review_id/comments', () => {
       .expect(404)
       .then(res => {
         expect(res.body.msg).toBe('review_id not found');
+      });
+  });
+});
+
+describe('/api/users', () => {
+  test('GET: 200 - responds with an object containing an array of user objects', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then(res => {
+        expect(res.body.users.length).toBe(4);
+        res.body.users.forEach(user => {
+          expect(user).toMatchObject({
+            username: expect.any(String),
+            name: expect.any(String),
+            avatar_url: expect.any(String),
+          });
+        });
       });
   });
 });
