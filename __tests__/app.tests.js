@@ -64,7 +64,8 @@ describe('/api/reviews', () => {
         });
       });
   });
-  test('GET: 200 - sorts object by descending date order', () => {
+
+  test('GET: 200 - sorts object by descending date order by default', () => {
     return request(app)
       .get('/api/reviews')
       .expect(200)
@@ -73,6 +74,18 @@ describe('/api/reviews', () => {
           descending: true,
         });
       });
+  });
+});
+
+test('GET:200 - selects the reviews by queried category', () => {
+  return request(app)
+  .get("/api/reviews?category=dexterity")
+  .expect(200)
+  .then((res) => {
+    expect(res.body.reviews.length).toBe(1)
+    res.body.reviews.forEach(review => {
+      expect(review.category).toBe('dexterity')
+    })
   });
 });
 

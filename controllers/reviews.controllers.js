@@ -5,7 +5,8 @@ const {
 } = require('../models/reviews.models.js');
 
 exports.getReviews = (req, res, next) => {
-  selectReviews()
+  const {category} = req.query;
+  selectReviews(category)
     .then(reviews => {
       res.status(200).send({ reviews });
     })
