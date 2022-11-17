@@ -98,6 +98,15 @@ describe('/api/reviews', () => {
         });
       });
   });
+
+  test.only('GET: 200 - sorts in ascending order when included in the query', () => {
+    return request(app)
+      .get('/api/reviews?sort_by=votes&order=ASC')
+      .expect(200)
+      .then(res => {
+        expect(res.body.reviews).toBeSortedBy('votes');
+      });
+  });
 });
 
 describe('/api/reviews/:review_id', () => {
