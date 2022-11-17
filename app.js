@@ -13,6 +13,8 @@ const {
 
 const { getUsers } = require('./controllers/users.controllers.js');
 
+const { getEndpoints } = require('./controllers/endpoints.controllers.js');
+
 const express = require('express');
 
 const app = express();
@@ -31,7 +33,9 @@ app.post('/api/reviews/:review_id/comments', postCommentByReviewId);
 
 app.patch('/api/reviews/:review_id', patchReviewById);
 
-app.get('/api/users', getUsers)
+app.get('/api/users', getUsers);
+
+app.get('/api', getEndpoints);
 
 app.all('/*', (req, res, next) => {
   res.status(404).send({ msg: 'Path not found' });

@@ -4,6 +4,7 @@ const app = require('../app.js');
 const db = require('../db/connection.js');
 const seed = require('../db/seeds/seed.js');
 const testData = require('../db/data/test-data/index.js');
+const endpoints = require('../endpoints.json');
 
 beforeEach(() => {
   return seed(testData);
@@ -125,7 +126,6 @@ describe('/api/reviews', () => {
         expect(res.body.msg).toBe('invalid sort query');
       });
   });
-  
 });
 
 describe('/api/reviews/:review_id', () => {
@@ -416,6 +416,17 @@ describe('/api/users', () => {
             avatar_url: expect.any(String),
           });
         });
+      });
+  });
+});
+
+describe.only('/api', () => {
+  test('GET: 200 - responds with a JSON describing all available endpoints', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(res => {
+        expect(res.body.endpoints).toEqual(endpoints);
       });
   });
 });
