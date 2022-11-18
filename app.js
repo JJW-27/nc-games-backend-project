@@ -1,23 +1,15 @@
-const { getCategories } = require('./controllers/categories.controllers.js');
-
 const {
+  getCategories,
   getReviews,
   getReviewById,
   patchReviewById,
-} = require('./controllers/reviews.controllers.js');
-
-const {
   getCommentsByReviewId,
   postCommentByReviewId,
   removeCommentByCommentId,
-} = require('./controllers/comments.controllers.js');
-
-const {
   getUsers,
   getUserByUsername,
-} = require('./controllers/users.controllers.js');
-
-const { getEndpoints } = require('./controllers/endpoints.controllers.js');
+  getEndpoints,
+} = require('./index.js');
 
 const express = require('express');
 
