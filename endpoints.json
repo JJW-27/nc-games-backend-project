@@ -112,5 +112,15 @@
         }
       ]
     }
+  },
+  "GET /api/users/:username": {
+    "description": "responds with a single user with the given username",
+    "exampleResponse": {
+      "user": {
+        "username": "string - equals the given username",
+        "name": "string",
+        "avatar_url": "string"
+      }
+    }
   }
 }

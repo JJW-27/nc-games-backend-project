@@ -129,7 +129,7 @@ describe('/api/reviews', () => {
 });
 
 describe('/api/reviews/:review_id', () => {
-  it('GET: 200 - returns a single review with the requested review_id, including a count of all comments for that review', () => {
+  it('GET: 200 - responds with a single review with the requested review_id, including a count of all comments for that review', () => {
     return request(app)
       .get('/api/reviews/2')
       .expect(200)
@@ -420,6 +420,40 @@ describe('/api/users', () => {
   });
 });
 
+describe('/api/users/:username', () => {
+  it('GET: 200 - responds with a single user with the requested username', () => {
+    return request(app)
+      .get('/api/users/mallionaire')
+      .expect(200)
+      .then(res => {
+        expect(res.body.user[0]).toEqual({
+          username: 'mallionaire',
+          name: 'haz',
+          avatar_url:
+            'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+        });
+      });
+  });
+
+  it('GET: 400 - Bad request', () => {
+    return request(app)
+      .get('/api/users/1')
+      .expect(400)
+      .then(res => {
+        expect(res.body.msg).toBe('Bad request');
+      });
+  });
+
+  it('GET: 404 - Valid but non-existent username', () => {
+    return request(app)
+      .get('/api/users/bananas')
+      .expect(404)
+      .then(res => {
+        expect(res.body.msg).toBe('username not found');
+      });
+  });
+});
+
 describe('/api/comments/:comment_id', () => {
   test('DELETE: 204 - deletes comment with given comment_id', () => {
     return request(app).delete('/api/comments/1').expect(204);
@@ -446,10 +480,14 @@ describe('/api', () => {
   });
 });
 
-describe.only('/', () => {
+describe('/', () => {
   test('homepage sends welcome message with endpoint information', () => {
-    return request(app).get('/').then(res => {
-      expect(res.text).toBe('Welcome! For a list of available endpoints, please access endpoint /api')
-    })
-  })
+    return request(app)
+      .get('/')
+      .then(res => {
+        expect(res.text).toBe(
+          'Welcome! For a list of available endpoints, please access endpoint /api'
+        );
+      });
+  });
 });

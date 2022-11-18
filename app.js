@@ -12,7 +12,7 @@ const {
   removeCommentByCommentId,
 } = require('./controllers/comments.controllers.js');
 
-const { getUsers } = require('./controllers/users.controllers.js');
+const { getUsers, getUserByUsername } = require('./controllers/users.controllers.js');
 
 const { getEndpoints } = require('./controllers/endpoints.controllers.js');
 
@@ -35,6 +35,8 @@ app.post('/api/reviews/:review_id/comments', postCommentByReviewId);
 app.patch('/api/reviews/:review_id', patchReviewById);
 
 app.get('/api/users', getUsers);
+
+app.get('/api/users/:username', getUserByUsername)
 
 app.get('/api', getEndpoints);
 
