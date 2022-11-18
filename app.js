@@ -9,7 +9,7 @@ const {
 const {
   getCommentsByReviewId,
   postCommentByReviewId,
-  removeCommentByCommentId
+  removeCommentByCommentId,
 } = require('./controllers/comments.controllers.js');
 
 const { getUsers } = require('./controllers/users.controllers.js');
@@ -38,7 +38,14 @@ app.get('/api/users', getUsers);
 
 app.get('/api', getEndpoints);
 
-app.delete('/api/comments/:comment_id', removeCommentByCommentId)
+app.get('/', (req, res, next) => {
+  
+  res.send(
+    'Welcome! For a list of available endpoints, please access endpoint /api'
+  );
+});
+
+app.delete('/api/comments/:comment_id', removeCommentByCommentId);
 
 app.all('/*', (req, res, next) => {
   res.status(404).send({ msg: 'Path not found' });
