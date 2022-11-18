@@ -12,7 +12,10 @@ const {
   removeCommentByCommentId,
 } = require('./controllers/comments.controllers.js');
 
-const { getUsers, getUserByUsername } = require('./controllers/users.controllers.js');
+const {
+  getUsers,
+  getUserByUsername,
+} = require('./controllers/users.controllers.js');
 
 const { getEndpoints } = require('./controllers/endpoints.controllers.js');
 
@@ -22,30 +25,28 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/api/categories', getCategories);
-
-app.get('/api/reviews', getReviews);
-
-app.get('/api/reviews/:review_id', getReviewById);
-
-app.get('/api/reviews/:review_id/comments', getCommentsByReviewId);
-
-app.post('/api/reviews/:review_id/comments', postCommentByReviewId);
-
-app.patch('/api/reviews/:review_id', patchReviewById);
-
-app.get('/api/users', getUsers);
-
-app.get('/api/users/:username', getUserByUsername)
-
-app.get('/api', getEndpoints);
-
 app.get('/', (req, res, next) => {
-  
   res.send(
     'Welcome! For a list of available endpoints, please access endpoint /api'
   );
 });
+
+app.get('/api', getEndpoints);
+
+app.get('/api/categories', getCategories);
+
+app.get('/api/reviews', getReviews);
+
+app.route('/api/reviews/:review_id').get(getReviewById).patch(patchReviewById);
+
+app
+  .route('/api/reviews/:review_id/comments')
+  .get(getCommentsByReviewId)
+  .post(postCommentByReviewId);
+
+app.get('/api/users', getUsers);
+
+app.get('/api/users/:username', getUserByUsername);
 
 app.delete('/api/comments/:comment_id', removeCommentByCommentId);
 
