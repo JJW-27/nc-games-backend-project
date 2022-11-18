@@ -445,3 +445,11 @@ describe('/api', () => {
       });
   });
 });
+
+describe.only('/', () => {
+  test('homepage sends welcome message with endpoint information', () => {
+    return request(app).get('/').then(res => {
+      expect(res.text).toBe('Welcome! For a list of available endpoints, please access endpoint /api')
+    })
+  })
+});
