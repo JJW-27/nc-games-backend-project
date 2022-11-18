@@ -12,8 +12,6 @@ Link to hosted version: https://real-rose-worm-kit.cyclic.app/
 
 Information available includes user, review, game and comment data.
 
-A list of available endpoints can be viewed at https://real-rose-worm-kit.cyclic.app/api
-
 # How to use this repo for your own project
 
 In order to make use of this repository for your own projects;
