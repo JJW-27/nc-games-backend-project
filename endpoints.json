@@ -101,6 +101,9 @@
       ]
     }
   },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes the comment with the given comment_id"
+  },
   "GET /api/users": {
     "description": "responds with an array of all users",
     "exampleResponse": {
